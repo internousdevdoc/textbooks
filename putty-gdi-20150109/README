@@ -1,0 +1,21 @@
+
++ PuTTY PRIVATE PATCHES
+------------------------------------------------------------
+
+  see http://ice.hotmint.com/putty/ for more details.
+
+
++ INSTALL
+------------------------------------------------------------
+
+  - copy *.exe (or \x64\*.exe) to your favorite folder.
+  - copy \ini\*.ini to the folder for storing settings in *.ini file.
+  - copy \ja-JP\*.lng for Japanized menu.
+
+
++ REBUILD
+------------------------------------------------------------
+
+  - acquire latest sources from svn://svn.tartarus.org/sgt/putty .
+  - apply patch file \patch\gdi.diff .
+  - follow standard putty rebuild process.
