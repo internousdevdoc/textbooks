@@ -1,0 +1,10 @@
+index.html
+style.css
+tetris.js
+render.js
+controller.js
+を作ります。
+
+効果音をダウンロード
+https://raw.githubusercontent.com/ottatiyarou/canvas-tetris/master/sound/pop.ogg
+

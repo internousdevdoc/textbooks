@@ -1,0 +1,29 @@
+
+http://d.hatena.ne.jp/white_chi/20111112/1321024825
+
+このサイトを参考にする
+
+
+MongoDBサイトからファイルをダウンロードします。
+http://www.mongodb.org/downloads
+環境に応じて「Windows 64-bit」か「Windows 32-bit」を選択し、ダウンロードしたら解凍します。
+「mongodb-win32-x86_64-2.0.1」というディレクトリができます。（64bitの場合）
+
+↓この真ん中のをダウンロードする
+mongodb-win32-x86_64-2008plus-3.0.7
+
+解凍
+
+ダウンロード
+
+
+「C:\MongoDB」ディレクトリを作成する
+その下に「win32-x86_64-2008plus-3.0.7」をコピーし（解凍したものをそのままいれる）
+「C:\MongoDB\log」ディレクトリと「C:\MongoDB\db」ディレクトリを作りました。
+
+管理者からプロトコマンドを実行し
+C:\MongoDB\mongodb-win32-x86_64-2008plus-3.0.7\bin\mongod.exe --install --logpath C:\MongoDB\log\log.txt --dbpath C:\MongoDB\db
+all output going to: C:\MongoDB\log\log.txt
+と入力
+
+システム→サービス→monogoを開始

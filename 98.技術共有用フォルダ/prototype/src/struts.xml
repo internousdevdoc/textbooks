@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN" "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<constant name="struts.ui.theme" value="simple" />
+	<package name="Prototype" namespace="/" extends="struts-default">
+		<action name="loginaction" class="action.LoginAction" method="execute">
+            <result name="success" >login.jsp</result>
+		</action>
+		<!-- ログインページから新規を押した際のアクション -->
+		<action name="newuser" class="action.newuserAction" method="execute">
+            <result name="success">proto.jsp</result>
+		</action>
+		<!-- Facebook認証を行うアクション -->
+		<action name="login-facebook" class="action.GoFacebookAction" method="execute">
+            <result name="success">login.jsp</result>
+            <result name="error">login.jsp</result>
+		</action>
+
+		<!-- Facebook認証のコールバックアクション -->
+		<action name="login-facebook-action" class="action.LoginFacebookAction" method="execute">
+            <result name="success">main.jsp</result>
+            <result name="error">login.jsp</result>
+		</action>
+
+		<!-- Google認証を行うアクション -->
+		<action name="login-google" class="action.GoGoogleAction" method="execute">
+			<result name="success">login.jsp</result>
+			<result name="error">login.jsp</result>
+		</action>
+
+		<!-- Google認証のコールバックアクション -->
+		<action name="login-google-action" class="action.LoginGoogleAction" method="execute">
+			<result name="success">main.jsp</result>
+			<result name="error">login.jsp</result>
+		</action>
+		<!-- Twitter認証を行うアクション -->
+		<action name="login-twitter" class="action.GoTwitterAction" method="execute">
+           <result name="success">login.jsp</result>
+           <result name="error">login.jsp</result>
+       </action>
+
+		<!-- Twitter認証のコールバックアクション -->
+		<action name="login-twitter-action" class="action.LoginTwitterAction" method="execute">
+			<result name="success">main.jsp</result>
+			<result name="error">login.jsp</result>
+        </action>
+        
+		<!-- MySQL関係 -->
+		<!-- MySQLへ遷移 -->
+		<action name="GoMySQLAction" class="action.GoMySQLAction"
+			method="execute">
+			<result name="success">mongo.jsp</result>
+		</action>
+		
+		<!-- 表示画面 -->
+		<action name="UserSelectAction"
+		class="action.UserSelectAction" method="execute">
+		<result name="success">proto.jsp</result>
+		<result name="error">proto.jsp</result>
+		</action>
+
+
+		<!-- 登録画面 -->
+		<action name="UserInsertAction"
+		class="action.UserInsertAction" method="execute">
+		<result name="success">proto.jsp</result>
+		<result name="error">proto.jsp</result>
+		</action>
+
+		<!-- 削除画面 -->
+		<action name="UserDeleteAction"
+		class="action.UserDeleteAction" method="execute">
+		<result name="success">proto.jsp</result>
+		<result name="error">proto.jsp</result>
+		</action>
+
+		<!-- 更新画面 -->
+		<action name="UserUpdateAction"
+		class="action.UserUpdateAction" method="execute">
+		<result name="success">proto.jsp</result>
+		<result name="error">proto.jsp</result>
+		</action>
+
+		<!-- Mongo関係 -->
+		<!-- Mongoへ遷移 -->
+		<action name="GoMongoAction" class="action.GoMongoAction"
+			method="execute">
+			<result name="success">mongo.jsp</result>
+		</action>
+
+		<!-- Mongoの情報を表示 -->
+		<action name="EventDisplayAction"
+			class="action.EventDisplayAction" method="execute">
+			<result name="success">mongo.jsp</result>
+		</action>
+		<!-- Mongoの情報に追加 -->
+		<action name="EventInsertAction" class="action.EventInsertAction"
+			method="execute">
+			<result name="success">mongo.jsp</result>
+		</action>
+		<!-- Mongoの情報を削除 -->
+		<action name="EventDeleteAction" class="action.EventDeleteAction"
+			method="execute">
+			<result name="success">mongo.jsp</result>
+		</action>
+		<!-- Mongoの情報を更新 -->
+		<action name="EventUpdateAction" class="action.EventUpdateAction"
+			method="execute">
+			<result name="success">mongo.jsp</result>
+			<result name="error">error.jsp</result>
+		</action>
+	</package>
+</struts>
