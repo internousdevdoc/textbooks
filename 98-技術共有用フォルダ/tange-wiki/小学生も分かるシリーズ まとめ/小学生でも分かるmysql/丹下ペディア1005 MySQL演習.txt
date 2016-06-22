@@ -1,0 +1,377 @@
+Pathの設定-----------------------------------------
+システムの詳細設定→環境変数
+Pathを編集
+行の最後に
+;C:\Program Files\MySQL\MySQL Server 5.6\bin;C:\Program Files\Git\cmd
+と入力
+
+MySQL-------------------------------------------
+ウインドウズボタン＋Rを入力
+cmdを入力
+
+mysqlの起動
+mysql -u root -u
+mysql
+
+データベース-------------------------------------
+・作成
+create database データベース名;
+・削除
+drop database データベース名;
+
+テーブル操作-----------------------------------
+・使用データベースの指定
+use データベース名
+・DB内のテーブル参照
+show tables;
+・テーブルの作成
+create table テーブル名(
+カラム名 データ型(intとか),
+id int,
+name varchar(100),
+point int,
+team enum('red','blue','green')
+);
+データ型はvarchar(100)１００文字まで打てるということ
+int 整数
+double 小数
+varchar 文字列
+text　大量の文字
+など
+・高度なフィールド
+入力必須(not null)
+主キー  (primary key)→テーブルのうちメインの行ひとつだけを指定するキー
+自動連番(auto_increment)→IDとかに使う自動連番
+ユニークキー	(unique)
+索引付与	(index)
+重複		(key MUL)
+FKが↓外部キー制約
+foreign key(shoppingid)references shopping(id)
+shoppingidというカラムはshoppingというテーブルのidというカラム内に書かれているものだけに制約
+それ以外の数字をshoppingidには使えません
+
+
+create table lesson(
+id int not null primary key auto_increment,
+name varchar(100) unique,
+point int,
+team enum(‘red’,’blue’,’green’),
+index(name),
+key point(point)
+);
+
+enumについて   ※（）内のデータしか入力できない
+↓red blue green の３つしかteamには入力できない
+create table lesson2(
+team enum(‘red',‘blue‘,’green’)
+);
+デフォルト値を追加  ※ 予め値を入力する
+create table lesson3(
+team enum(‘red',‘blue‘,’green’)default‘red'
+);
+・テーブル定義の確認
+desc テーブル名;
+各カラムにどんな制約やデータ型が使われているか一覧を表示する
+・テーブルの削除
+drop table テーブル名;
+
+
+
+
+インサート---------------------------------------
+レコードを入力する作業insert into テーブル名
+
+insert into lesson(
+id,name,point,cellphone_number,team
+)
+values(
+1,'Abe',10,0901111222,'red'
+);
+
+insert into lesson(
+id,name,point,cellphone_number,team
+)
+values(
+2,'Tange',20,0902223333,'blue'
+);
+
+insert into lesson(
+id,name,point,cellphone_number,team
+)
+values(
+3,'Takahashi',30,0901111222,'green'
+);
+
+insert into lesson(
+id,name,point,cellphone_number,team
+)
+values(
+4,'Goto',40,0901111223,'red'
+);
+
+insert into lesson(
+id,name,point,cellphone_number,team
+)
+values(
+5,'Sato',50,0901111224,'blue'
+);
+
+
+
+データの抽出----------------------------------------------------
+select * from lesson;　　そのテーブルの表を表示
+select name from lesson;　　テーブルのnameというカラムだけ表示
+select * from lesson \G   縦表示(セミコロン不要)
+
+
+
+抽出条件----------------------------------------------------------
+・point が 50 のデータ
+select * from lesson where point = 50;
+・point が 80 以上のデータ
+select * from lesson where point >= 80;
+・team が red でないデータ(!=)
+select * from lesson where team != ‘red’;
+・ name の最初が Tで始まるデータ(like)
+select * from lesson where name like 'T%';
+・name の最後が a で終わるデータ(like)
+select * from lesson where name like '%a';
+・name の途中に ana が含まれているデータ(like)　→アンダーバーは続く文字数分だけ
+select * from lesson where name like ‘%ana__’; 
+・60以上80以下のポイント　between
+select * from lesson where point between 60 and 80;
+・チームがレッドとグリーン in ('レコード名','レコード名')
+select * from lesson where team in ('red','green');
+・かつ　and
+select * from lesson where point >= 80 and team = 'blue';
+・または or
+select * from lesson where point >= 80 or team = 'blue';
+
+
+並べ替え----------------------------------------------------------
+・order by 昇順で並べ替え
+select * from lesson order by point;
+・order by カラム名 desc 降順で並べ替え
+select * from lesson order by point desc;
+・limit 数字  指定した件数だけ表示する
+select * from lesson limit 3;
+・limit 数字,数字(表示件数)  途中から指定した件数だけ表示
+select * from lesson limit 2,2;
+
+
+データの集計------------------------------------------------------
+・count データの件数を表示
+select count(*) from lesson;
+・max() 指定したカラムの最高値を表示　⇔ min 最小値
+select max(point) from lesson;
+・sum() 指定したカラムの合計値を表示
+select sum(point) from lesson;
+・avg() 指定したカラムの平均を表示する
+select avg(point) from lesson;
+・group by チームごとの平均を表示する
+select team, avg(point) from lesson group by team;
+・length 指定したカラムの文字列数を表示する
+select name, length(name) from lesson;
+・concat 指定したカラムの文字列を連結する
+select concat(name,'(',team,')') from lesson;
+
+
+データの更新・削除-----------------------------------
+・update set  idが1のpointのデータを100に更新する
+update lesson set point = 100 where id = 1;
+・delete　ポイントが60点未満のデータを削除する
+delete from lesson where point < 60;
+・delete  指定したテーブルのデータをすべて削除
+delete from lesson;
+
+
+テーブル構造を変更する-------------------------------
+・alter table ～ after　カラムのあとに新規カラムを追加する
+alter table lesson add telnumber int(11) after point;
+・alter table ～ chage  カラム名を変更する
+alter table lesson change telnumber cellphone_number int(11);
+・カラムの削除　alter table テーブル名 drop カラム名;
+→２行削除 alter table テーブル名 drop(カラム名,カラム名)；
+
+
+外部キー制約-----------------------------------------
+商品を管理するテーブルを作成
+create table goods(
+id int,
+name varchar(10),
+index(name)
+);
+
+売れた商品を記録するテーブルの作成（商品名に外部キー制約をつける）
+このとき、全商品リストに登録されている商品以外の名前は売れた商品
+リストに登録できなくなる。
+create table sales(
+id int,
+name varchar(10),
+day date,
+index(name),
+foreign key(name) references goods(name)
+);
+
+
+
+外部ファイルの作成------------------------------------
+一旦MySQLからログアウト
+メモ帳でsql文を作成
+drop table if exists gaibu;
+create table gaibu(id int,name varchar(255));
+insert into gaibu(id,name)value(1,'MySQL');
+
+command.sql[ファイル名]
+
+外部ファイルからコマンド実行
+mysql -u root -p sample1 < command.sql
+不等号の向きが外部ファイル側からDBへ
+
+
+バックアップ作成-----------------------------------
+一旦ログアウト
+mysqldump -u root -p sample1 > sampledump.sql
+→C:\Users\internous 直下にファイルが出力される。
+不等号の向きがDB側から外部ファイルへ
+
+データ復旧
+mysql -u root -p sample1 > sampledump.sql
+パス入力
+
+
+
+パスワード設定-------------------------------------
+set password
+for root@localhost =
+password('mysql');
+
+rootのパスワードをmysqlにした。
+
+ユーザー作成------------------------------------------
+MySQLは最初はrootしかいない
+rootが削除されるとすべての操作ができなくなる
+
+アカウントの追加[dbuser]
+grant all on sample1.*to
+dbuser@localhost
+identified by 'mysql';
+
+sample1についてdbuserという人は管理できる
+パスワードはmysql
+
+
+git GitHub-----------------------------------------------------
+コマンドプロンプトに入力
+GitHubからクローンした
+git clone https://github.com/internousdevwork/strutsdb.git
+
+dirと入力(一覧表示)
+
+internousのフォルダにstrutsdbというフォルダができている
+
+cd strutsdbと入力(gitファイルを扱うためには一度リポジトリに入らないといけない)
+
+C:\Users\internous\strutsdb>ここにdirと入力
+→9月生の名前が入ったフォルダが表示される
+
+mkdir tangeと入力(自分の名前のフォルダを作る)
+確認するにはstrutsdbのフォルダを見る
+
+cd tange と入力　
+
+notepad test.txtと入力
+→メモ帳に自分の名前を入力 ctrl + S　で上書き保存
+
+①GitHubにアップロードしていないファイルがないかどうか確認するコマンド
+git status
+
+②git add test.txt
+Gitにファイルをアップロードするコマンド(宅急便のラベルを貼るイメージ)
+すべてのファイルならgit add --allと入力
+
+※初回のみ必要なコマンド
+git config --global user.name "Youhei Tange"
+git config --global user.email "mie_tange@yahoo.co.jp"
+荷物の送り主の本人確認
+誰がどの荷物を送ったのかわかるようにする作業
+
+③git commit -m "first commit"
+中に何が入っているか伝えるコメント -m はメッセージのm
+first commitはなんでもOK　宅急便のラベルのイメージ
+
+④git push → user : internousdevwork  password : internous01
+実際にgit GitHubに送られる作業push
+
+⑤git pull
+自分がまだ取り込んでいないファイルをDLするコマンド
+最新化
+
+
+dropbox-------------------------------------------------
+アプリをダウンロード
+アカウント internous.dev01@gmail.com
+パスワード internous01
+
+右下のアイコンからファイルを共有できる
+
+フォルダを開いてデータベース演習課題
+
+メモ・疑問----------------------------------------------
+20151006
+？indexはnot nullとかprimary keyみたいにカラム名の後に入れたらできない
+→primary keyも複数あるとできない？？
+→複数あるときは独立して書いたほうがよさそう
+foreign key(shoppingid)references shopping(id),
+foreign key(productid)references catalog(id),
+index(shoppingid,no),
+ primary key(shoppingid,no)
+);
+？foreign key カラム名 references 参照先(カラム名)
+どういう役割なの？
+→外部キー制約の意味
+参照先テーブルのカラム名に含まれるデータしか入力できないという意味
+foreign key(productid)references catalog(id),
+catalogテーブルのidという行の内容しかproductidには入力できない
+？git add --all した後にgit pushしたら一回目は送られず、
+もう一回最初から試したら送られた
+→git pushのパスワード・ユーザ名が間違っていた可能性大
+→タイムラグがありそう,最初のconfigがうまくできていない可能性
+
+
+追記
+primary keyはひとつにまとめれる
+
+
+create table test_table(
+user_id int,
+user_name varchar(255)
+);
+
+insert into users(
+name,password
+)
+values(
+'Youhei','1234'
+);
+
+insert into users(
+name,password
+)
+values(
+'Tange','2345'
+);
+
+insert into users(
+name,password
+)
+values(
+'Tanaka','3456'
+);
+
+insert into users(
+name,password
+)
+values(
+'Kato','4567'
+);
